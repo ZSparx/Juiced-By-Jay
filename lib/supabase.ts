@@ -4,6 +4,10 @@ import { createClient } from "@supabase/supabase-js";
 export function supabasePublic() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-  if (!url || !key) throw new Error("Supabase env vars are missing");
+
+  // Keep the public client wiring intact while allowing the preview shell to render
+  // when project variables have not reached the running server yet.
+  if (!url || !key) return null;
+
   return createClient(url, key, { auth: { persistSession: false } });
 }

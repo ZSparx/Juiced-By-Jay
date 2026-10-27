@@ -2,7 +2,10 @@ import { supabasePublic } from "./supabase";
 import type { Product } from "./types";
 
 export async function getProducts(): Promise<Product[]> {
-  const { data, error } = await supabasePublic()
+  const supabase = supabasePublic();
+  if (!supabase) return [];
+
+  const { data, error } = await supabase
     .from("products")
     .select("*")
     .eq("active", true)
@@ -12,7 +15,10 @@ export async function getProducts(): Promise<Product[]> {
 }
 
 export async function getProduct(slug: string): Promise<Product | null> {
-  const { data, error } = await supabasePublic()
+  const supabase = supabasePublic();
+  if (!supabase) return null;
+
+  const { data, error } = await supabase
     .from("products")
     .select("*")
     .eq("slug", slug)
